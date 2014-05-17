@@ -1,0 +1,142 @@
+1.用带头结点的双循环链实现线性表，编写就地逆置线性表的算法
+#include<iostream>
+using namespace std;
+struct DblNode
+{
+	int data;
+	DblNode *lLink,*rLink;
+	DblNode(DblNode *left=NULL,DblNode *right=NULL)
+		:lLink(left),rLink(right){}
+	DblNode(int value,DblNode *left=NULL,DblNode *right=NULL)
+		:data(value),lLink(left),rLink(right){}
+};
+class DblList
+{
+public:
+	DblList(int uniqueVal);                         //构造函数：建立双向循环链表的附头结点，它包含了一个用于某些特定情况的值
+	DblNode *Locate(int i,int d);                   //在带附加头结点的双向循环链表中按 d 所指的方向寻找第 i 个结点。若d=0,在前驱方向寻找第 i 个结点，若 i！=0，在后继方向寻找。
+	bool Insert(int i,const int& x,int d);          //建立一个包含有值x的新结点，并将其按d指定的方向插入到第i个结点之后。
+	bool Remove(int i,int& x,int d);                //按d所指方向删除第i个结点。
+        void Reverse();                                 //逆置线性表
+	void input();
+	void output();
+private:
+	DblNode *first;
+};
+
+DblList::DblList(int uniqueVal)
+{
+	first=new DblNode(uniqueVal);
+	if(first==NULL){cerr<<"存储分配错误！"<<endl;exit(1);}
+	first->rLink =first->lLink =first;
+}
+DblNode *DblList::Locate(int i, int d)             //寻找第i个结点的地址
+{
+	if(i<0)return NULL;
+	DblNode *current=first;
+	for(int j=1;j<=i;j++)
+	{
+		if(d==0)
+			current=current->lLink ;
+		else
+			current=current->rLink ;
+		if(current==first)break;
+	}
+	if(current!=first)
+		return current;
+	else
+		return NULL;
+}
+bool DblList::Insert (int i,const int& x, int d)
+{
+	DblNode *current=Locate(i,d);
+	if(current==NULL)return false;
+	DblNode *newNode=new DblNode(x);
+	if(newNode==NULL){cerr<<"wrong"<<endl;exit(1);}
+	if(d==0)
+	{
+		newNode->lLink =current->lLink ;
+		newNode->rLink =current;
+		newNode->lLink ->rLink =newNode;
+		current->lLink =newNode;
+	}
+	else
+	{
+		newNode->lLink =current;
+		newNode->rLink =current->rLink ;
+		current->rLink =newNode;
+		newNode->rLink ->lLink =newNode;
+	}
+	return true;
+}
+bool DblList::Remove(int i, int &x, int d)
+{
+	DblNode *current=Locate(i,d);
+	if(current==NULL)return false;
+	current->lLink ->rLink =current->rLink ;
+	current->rLink ->lLink =current->lLink ;
+	x=current->data ;
+	delete current;
+	return true;
+}
+void DblList::Reverse()
+{
+	DblNode *p=first,*q;
+	do
+	{
+		q=p->lLink ;
+		p->lLink =p->rLink ;
+		p->rLink =q;
+		p=p->lLink ;
+	}while(p!=first);
+}
+void DblList::input ()
+{
+	cout<<"开始建立单链表，请输入元素的值： "<<endl;
+	DblNode *newNode, *last;
+	int val;
+	cin>>val;
+	last=first;
+	while(val!=-1)
+	{
+		newNode=new DblNode(val);
+		if(newNode==NULL)
+		{cerr<<"存储分配错误！"<<endl;}
+		else
+		{
+			last->rLink =newNode;
+			newNode->lLink =last;
+			last=newNode;
+			cin>>val;
+		}
+	}
+	last->rLink =first;
+	first->lLink =last;
+}
+void DblList::output ()
+{
+	DblNode *current=first->rLink ;            //从first->link开始，因为这是带附件头结点的链表
+	while(current!=first)
+	{
+		cout<<current->data<<endl;
+		current=current->rLink ;
+	}
+}
+
+
+2.用带头结点的单链表实现线性表，编写判断线性表元素是否递增有序排列的算法
+bool List::judge ()
+{
+	if(first->link !=NULL)
+	{
+		LinkNode *p=first->link;
+		while(p->link !=NULL)
+		{
+			if(p->link ->data >p->data )
+				p=p->link ;
+			else
+				return false;
+		}
+		return true;
+	}
+}

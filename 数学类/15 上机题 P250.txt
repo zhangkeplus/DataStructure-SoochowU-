@@ -1,0 +1,49 @@
+2.对数组a中存放的n(n>=1)个整数按值从小到大进行编号，a[i]的编号存放在数组b的元素b[i]中，
+约定数组a中最小整数的编号为1，相同的整数具有相同的编号，在求编号的过程中不能改变数组a.
+例如：n=7, a=(5,3,4,9,3,5,7),则 b=(3,1,2,5,1,3,4).
+
+#include<iostream>
+using namespace std;
+int a[20],b[20],c[20];
+int sort(int arr,int length)
+{
+	int k=1;
+	for(int i=0;i<length;i++)
+	{
+		if(arr>a[i])
+			k++;
+	}
+	return k;
+}
+int main()
+{
+	int length;
+	cout<<"输入数组中元素个数: ";
+	cin>>length;
+	cout<<"请输入数组a中的数： ";
+	for(int i=0;i<length;i++)
+		cin>>a[i];
+	for(int j=0;j<length;j++)
+	{
+		c[j]=sort(a[j],length);
+		b[j]=c[j];
+	}
+
+	//相同的整数具有相同的编号
+	for(int i=0;i<length-1;i++)
+		for(int j=i+1;j<length;j++)
+		{
+			if(c[i]==c[j])
+			{
+				for(int k=0;k<length;k++)
+				{
+					if(b[k]>c[i])
+						b[k]--;
+				}
+			}
+		} 
+	cout<<"输出数组b"<<endl;
+	for(int j=0;j<length;j++)
+		cout<<b[j]<<" ";
+	cout<<endl;
+}

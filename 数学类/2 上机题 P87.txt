@@ -1,0 +1,97 @@
+1.设数列{an}的各项为：a1=100,a2=99,...,an=|a(n-1)-a(n-2)|(n>=3),求该数列前100项和
+#include<iostream>
+#include<math.h>
+using namespace std;
+int main()
+{
+	int a[101],total=199;
+	a[1]=100,a[2]=99;
+	for(int i=3;i<=100;i++)
+	{
+		a[i]=abs(a[i-1]-a[i-2]);
+		total=total+a[i];
+	}
+	cout<<total;
+}
+output:4522
+
+
+2.统计能被3整除且至少有一位是5的三位数是个数
+#include<iostream>
+using namespace std;
+int main()
+{
+	int m,n,i,j,temp=0;
+	for(n=34;n<=333;n++)
+	{
+		m=3*n;
+		i=m/100;
+		j=m/10-i*10;
+		if(i==5 || j==5 || m%5==0)
+			temp++;
+	}
+	cout<<temp;
+}
+output:109
+
+
+3.求所有满足下面条件的三位数：它能被11整除，且所得的商恰好等于该三位数的各位数字的平方和
+#include<iostream>
+using namespace std;
+int main()
+{
+	int i,j,k,ic,id,jc,jd;
+	for(i=1;i<=9;i++)
+	{
+		ic=i*i;
+		id=100*i;
+		for(j=0;j<=9;j++)
+		{
+			jc=j*j;
+			jd=10*j;
+			for(k=0;k<=9;k++)
+			{
+				if((id+jd+k)%11==0 && (id+jd+k)/11==(ic+jc+k*k))
+					cout<<id+jd+k<<endl;
+			}
+		}
+	}
+
+}
+output: 550
+        803
+
+
+4.求所有满足下面要求的四位数：四位数的各位数字的四次方之和等于该四位数
+#include<iostream>
+using namespace std;
+int main()
+{
+	int i,j,k,m,ic,id,jc,jd,kc,kd,mc;
+	for(i=1;i<=9;i++)
+	{
+		ic=i*i*i*i; 
+		id=1000*i;
+		for(j=0;j<=9;j++)
+		{
+			jc=j*j*j*j;
+			jd=100*j;
+			for(k=0;k<=9;k++)
+			{
+				kc=k*k*k*k;
+				kd=10*k;
+				for(m=0;m<=9;m++)
+				{
+					mc=m*m*m*m;
+					if((ic+jc+kc+mc)==(id+jd+kd+m))
+						cout<<id+jd+kd+m<<endl;
+				}
+			}
+		}
+	}
+
+}
+
+output:1634
+       8208
+       9474

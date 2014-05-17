@@ -1,0 +1,68 @@
+输入n的值（n>=1），输出下面样式的n行n列方阵。如输入3，则输出
+7 8 1
+6 9 2
+5 4 3,
+输入4，则输出
+10 11 12  1
+ 9 16 13  2
+ 8 15 14  3
+ 7  6  5  4
+
+#include<iostream>
+using namespace std;
+int a[10][10];
+void sort(int n,int temp1,int temp2,int num)
+{
+	int i;
+	i=temp1;//右边一列
+	for(int count=1;count<=temp2;count++)
+	{
+		a[i++][n-1]=num++;
+	}
+
+	i=n-1;//下面一行,
+	for(int count=1;count<=temp2;count++)
+	{
+		a[n-1][i--]=num++;
+	}
+
+	i=n-1;//左面一列
+	for(int count=1;count<=temp2;count++)
+	{
+		a[i--][temp1]=num++;
+	}
+	i=temp1;//上面一行
+	for(int count=1;count<=temp2;count++)
+	{
+		a[temp1][i++]=num++;
+	}
+}
+int main()
+{
+	int n;
+	cin>>n;
+	int t=n,arr=n,total=n*n,temp1=0,temp2=n-1,num=1;
+	while(num<total)   //计数值小于应该计数的值时。若N为偶数，临界情况是此时<total，而下次>total;
+	{                  //若N为奇数，临界情况是num==total，此时不执行，所以也不可能>total		
+                sort(arr,temp1,temp2,num);
+		temp1++;
+		temp2-=2;     //每行每列赋值用的循环计数器    
+		arr--;        //对右边一列相当有用，右边一列依次递减，即arr--
+		num+=4*(t-1); //此圈结束后，下一个数的数值
+		t=t-2;        //每循环一圈，边长度减2
+	}
+	if(num==total)             //对于n为奇数时，中间数为a[(n-1)/2][(n-1)/2]
+		a[(n-1)/2][(n-1)/2]=total;
+	int changeline=0;
+	for(int i=0;i<n;i++)
+		for(int j=0;j<n;j++)
+		{
+			cout<<a[i][j]<<"    ";
+			changeline++;
+			if(changeline==n)
+			{
+				cout<<endl;
+				changeline=changeline%n;
+			}     
+		}
+}

@@ -1,0 +1,134 @@
+1.输入10个整数，输出最接近和最偏离平均值的整数
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+	int a[10],total=0,near,far;
+	float avg,min,max;
+	for(int i=0;i<10;i++)
+	{
+		cin>>a[i];
+		total+=a[i];
+	}
+	avg=total*1.0/10;
+	min=max=abs(a[0]-avg);
+	near=far=a[0];
+	for(int i=1;i<10;i++)
+	{
+		if(abs(a[i]-avg)<min)
+		{
+			min=abs(a[i]-avg);
+			near=a[i];
+		}
+		if(abs(a[i]-avg)>max)
+		{
+			max=abs(a[i]-avg);
+			far=a[i];
+		}
+	}
+	cout<<"最接近平均值的数是"<<near<<endl;
+	cout<<"最偏离平均值的数是"<<far<<endl;
+}
+
+2.对一个非负整数的各位数字重新排列就能得到一个新的整数，输入一个非负整数，输出可能得到的整数中
+比原整数大的最小整数（如果存在）和比原整数小的最大整数（如果存在）
+#include<iostream>
+#include<string.h>
+using namespace std;
+int main()
+{
+	char a[100];
+	char b[100];
+	cin>>a;
+	strcpy(b,a);
+	int len=strlen(a),i,j,min,p,w,max;
+//求比原整数大的最小整数，如果存在的话
+	bool flag=false;
+	//寻找必须得改变的那个点的位置
+	w=len-1;
+	while(w)
+	{
+		if(a[w]>a[w-1])
+		{
+			min=a[w];
+			p=w;
+			flag=true;
+			break;
+		}
+		w--;	
+	}
+	if(flag)
+	{
+		w--;                    //注意：-- 运算后才是需改变的那个点的位置
+		for(i=len-1;i>w;i--)    //寻找w位置之后的大于a[w]的最小元素
+		{
+			if((a[i]>a[w]) && (a[i]<min))
+			{
+				min=a[i];
+				p=i;
+			}
+		}
+	    char temp=a[w];
+	    a[w]=min;
+	    a[p]=temp;
+	    for(i=w+1;i<=len-2;i++)     //对从a[w+1]到a[len-1]这些元素按从小到大顺序排序
+			for(j=i+1;j<=len-1;j++)
+			{
+				if(a[i]>a[j])
+				{
+				   char temp=a[i];
+				    a[i]=a[j];
+				    a[j]=temp;
+				}
+			}
+		cout<<"比原整数大的最小整数："<<a<<endl;
+	}
+	else
+		cout<<"不存在比原整数大的最小整数 !"<<endl;
+
+
+
+	//求比原整数小的最大整数，如果存在的话
+	flag=false;
+	w=len-1;
+	while(w)
+	{
+		if(b[w]<b[w-1])
+		{
+			max=b[w];
+			p=w;
+			flag=true;
+			break;
+		}
+		w--;	
+	}
+	if(flag)
+	{
+		w--;                   //注意：-- 运算后才是需改变的那个点的位置
+		for(i=len-1;i>w;i--)   //寻找w位置之后的小于b[w]的最大元素
+		{
+			if((b[i]<b[w]) && (b[i]>max))
+			{
+				max=a[i];
+				p=i;
+			}
+		}
+	    char temp=b[w];
+	    b[w]=max;
+	    b[p]=temp;
+	    for(i=w+1;i<=len-2;i++)   //对从a[w+1]到a[len-1]这些元素按从大到小顺序排序
+			for(j=i+1;j<=len-1;j++)
+			{
+				if(b[i]<b[j])
+				{
+				   char temp=b[i];
+				    b[i]=b[j];
+				    b[j]=temp;
+				}
+			}
+		cout<<"比原整数小的最大整数："<<b<<endl;
+	}
+	else
+		cout<<"不存在比原整数小的最大整数 !"<<endl;
+}

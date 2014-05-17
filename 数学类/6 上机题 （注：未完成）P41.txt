@@ -1,0 +1,51 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+	int a[8],i,j,k,m,s,t;
+	for(a[0]=1;a[0]<=8;a[0]++)
+	{
+		i=a[0]*10+a[0];                      //年年
+		for(a[1]=1;a[1]<=8;a[1]++)
+		{
+			j=a[1]*a[1]+a[1];                //岁岁
+			{
+				for(a[2]=1;a[2]<=9;a[2]++)
+					for(a[3]=0;a[3]<=9;a[3]++)
+						for(a[4]=1;a[4]<=9;a[4]++)
+						{
+							k=a[2]*100+a[3]*10+a[4];   //花相似
+							if(i*j==k)
+							{
+								for(a[5]=1;a[5]<=9;a[5]++)
+									for(a[6]=1;a[6]<=9;a[6]++)
+										for(a[7]=0;a[7]<=9;a[7]++)
+										{
+											m=a[6]*10+a[7];             //不同
+											if( (j/i)==(a[5]/m) && (j%i)==(a[5]%m) )
+											{
+												bool temp=true;
+												for(s=0;s<7;s++)
+												{
+													for(t=s+1;t<=7;t++)
+													{
+														if(s==t)
+														{
+															temp=false;
+															break;
+														}
+													}
+													if(temp)
+													{
+														for(i=0;i<=7;i++)
+															cout<<a[i]<<' ';
+													}
+												}
+											}
+										}
+							}
+						}
+			}
+		}
+	}
+}

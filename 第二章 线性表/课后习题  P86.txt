@@ -1,0 +1,96 @@
+1.针对带头结点的单链表实现线性表
+  编写整理函数tidyup：
+
+(1)在非递减有序的单链表中删除值相同的多余结点，相同的结点只保留一个
+void List::Tidyup ()
+{
+	if(first->link !=NULL)
+	{
+		LinkNode *p=first->link ,*q;
+		while(p->link !=NULL)
+		{
+			if(p->link ->data == p->data)
+			{
+				q=p->link ;
+				p->link =q->link ;
+				delete q;
+			}
+			else
+				p=p->link ;
+		}
+	}
+}
+(2)无序链表中。。。。。删除值相同的多余结点，相同的结点只保留一个
+void List::Tidyup ()
+{
+	if(first->link !=NULL)
+	{
+		LinkNode *p=first;                                          //LinkNode *p=first->link ;
+		while(p->link !=NULL)                                       //如果改成这样的就不可以，对于1,2,3,3之类
+		{                                                           //的数据就不成立，想想为什么
+			LinkNode *q=p->link ,*r;                            //LinkNode *q=p,*r;
+			while(q->link !=NULL)                               //  
+			{                                                   //  
+				if( q->link ->data  == p->link ->data )     //if( q->link ->data  == p->data)
+				{
+				        r=q->link;
+					q->link = r->link ;
+					delete r;
+			    }
+				else
+					q=q->link ;
+			}
+			p=p->link ;
+		}
+	}
+}     
+(3)无序链表中。。。。。如果有相同值的元素，则将他们全部删除
+void List::Tidyup ()
+{
+	if(first->link !=NULL)
+	{
+		LinkNode *p=first;
+		while(p->link !=NULL)
+		{
+			bool flag=false;            //比只保留一个（即上面那个算法）多了temp，
+			LinkNode *q=p->link ,*r,*t; //是为了删除每一次遍历比较时,删除有相同元素时的基结点
+			while(q->link !=NULL)
+			{
+				if( q->link ->data  == p->link ->data )
+				{
+					flag=true;
+				        r=q->link;
+					q->link = r->link ;
+					delete r;
+			    }
+				else
+					q=q->link ;
+			}
+			if(flag)
+			{
+				t=p->link;
+				p->link =t->link ;
+				delete t;
+			}
+			else
+				p=p->link ;
+		}
+	}
+}     
+
+2.将带头结点的单链表中的结点按顺序一个一个拆下来重新组装，一边拆一边装，逆置
+void List::Reverse ()
+{
+	if(first->link !=NULL)
+	{
+		LinkNode *p=first->link ,*q;
+		first->link =NULL;               //拆下来，最后NULL移到末尾
+		do                               //用do循环是因为链表最后一个的link是NULL
+		{
+			q=p->link ;
+			p->link =first->link ;
+			first->link =p;
+			p=q;
+		}while(p!=NULL);
+	}
+}

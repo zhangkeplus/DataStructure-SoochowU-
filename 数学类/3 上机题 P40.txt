@@ -1,0 +1,112 @@
+1.有两个两位正整数 i 和 j ,已知 i 减去 j 等于56，i*i 的末两位等于 j*j 的末两位，
+求 i 和 j的值
+
+#include<iostream>
+using namespace  std;
+int main()
+{
+	int i,j;
+	for(i=66;i<=99;i++)
+	{
+		j=i-56;
+		if((i*i)%100==(j*j)%100)
+			cout<<i<<' '<<j;
+	}
+}
+output:78 22
+
+
+2.将输入的100个整数按最小值，最大值，次最小值，次最大值.....的次序输出
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+void Sort(int v[] , int n)
+{
+	bool exchange; int i,j;                 //排序
+	for(i=1;i<n;i++)
+	{
+		exchange=false;
+		for(j=n-1;j>=i;j--)                       
+			if(v[j-1]>v[j])
+			{
+				int temp=v[j-1];v[j-1]=v[j];v[j]=temp;
+				exchange=true;
+			}
+			if(exchange==false) return;
+	}
+}
+int main()
+{
+	ifstream in("E:\\1.txt");
+	int a[100];
+	for(int i=0;i<99;i++)
+		in>>a[i];
+	Sort(a,100);
+	for(int i=0;i<50;i++)
+		cout<<a[i]<<' '<<a[99-i]<<' ';
+}
+
+
+
+3.求有序序列中前面最小的100个不同的数，它们满足：<1>数 1 在序列中;<2>若数x在序列中，则2x,3x,5x也在序列中;
+<3>除此之外，序列中无其他数
+
+#include<iostream>
+using namespace std;
+int main()
+{
+	int temp,i=1,n=2;
+	int a[100];
+	a[0]=1;
+	while(i<100)
+	{
+		temp=n;
+		while(n%2==0)
+			n/=2;
+		while(n%3==0)
+			n/=3;
+		while(n%5==0)
+			n/=5;
+		if(n==1)
+		{
+			 a[i]=temp;
+			 i++;
+		}
+		n=temp+1;
+	}
+	for(i=0;i<100;i++)
+		cout<<a[i]<<' ';
+}
+
+
+
+4.打印下面的图案
+
+      **
+    **  **
+  ***    ***
+****      ****
+  ***    ***
+    **  **
+      **
+ 
+#include<iostream>
+#include<math.h>
+using namespace std;
+int main()
+{
+	int i,j,k,m,n;
+	for(i=-3;i<=3;i++)
+	{
+		for(j=0;j<abs(2*i);j++)
+			cout<<' ';
+		for(k=0;k<4-abs(i);k++)
+			cout<<"*";
+		for(m=0;m<2*abs(abs(i)-3);m++)
+			cout<<' ';
+		for(n=0;n<4-abs(i);n++)
+			cout<<"*";
+		cout<<endl;
+	}
+}

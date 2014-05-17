@@ -1,0 +1,65 @@
+设用不带头结点的单链表实现线性表，编写:
+(1)求线性表长度的递归算法
+int List::RecursiveLength (LinkNode *first)const
+{
+	if(first==NULL)
+		return 0;
+	else
+		return 1+RecursiveLength(first->link);
+}
+
+int List::Length ()const
+{
+	return RecursiveLength(first);
+}
+(2)清除线性表的递归算法
+void List::RecursiveClear (LinkNode * &first)
+{
+	if(first!=NULL)
+	{
+		RecursiveClear(first->link );
+		delete first;
+		first=NULL;
+	}
+}
+
+void List::Clear ()
+{
+	RecursiveClear(first);
+}
+
+(3)逆序打印线性表元素值的递归算法
+void List::RecursiveWrite(LinkNode *first)const
+{
+	if(first!=NULL)
+	{
+		RecursiveWrite(first->link );
+		cout<<first->data<<endl ;
+	}
+}
+
+void List::Write ()const
+{
+	RecursiveWrite(first);
+ }
+
+(4)逆置线性表的递归算法
+void List::RecursiveReverse(LinkNode * &first)
+{
+	if(first!=NULL)
+	{
+		LinkNode *p=first,*q;
+		first=q=p->link ;
+		p->link =NULL;
+		RecursiveReverse(first);
+		if(first==NULL)
+			first=p;
+		else
+			q->link =p;
+	}
+}
+
+void List::Reverse()
+{
+	RecursiveReverse(first);
+}

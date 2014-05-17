@@ -1,0 +1,39 @@
+有一个n行(n>=1)的三角形灯塔，第i行(1=<i<=n)上有i盏灯，下面是一个四行的三角形灯塔上所有灯的亮暗情况(0表示暗，1表示灯亮):
+除最后一行上的灯外，其余每盏灯的亮暗都由其左下方和右下方两盏灯的亮暗决定，具体规划如下：
+输入n的值和最后一行上的灯的亮暗情况，输出三角形灯塔上所有灯的亮暗情况
+
+#include<iostream>
+using namespace std;
+int a[100];
+void light(int a[] , int n)
+{
+	cout<<"第"<<n<<"行的亮暗情况 :";
+	for(int i=0;i<n;i++)
+		cout<<a[i]<<" ";
+	cout<<endl;
+	int j=0;
+	for(int i=0;i<n-1;i++)
+	{
+		if((a[i]+a[i+1])==1)
+			a[i]=1;
+		else
+			a[i]=0;
+	}
+}
+int main()
+{
+	int n;
+	cout<<"输入行数，及最后一行上的灯的亮暗情况:";
+	cin>>n;
+	for(int i=0;i<n;i++)
+	{
+		cin>>a[i];
+	}
+	while(n>1)
+	{
+		light(a,n);
+		n--;
+	}
+	cout<<"第1行的亮暗情况 :";
+	cout<<a[0]<<endl;
+}

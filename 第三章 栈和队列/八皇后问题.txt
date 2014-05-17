@@ -1,0 +1,45 @@
+#include<iostream>
+using namespace std;
+int a[10],b[24],c[24],d[24];
+int t=0;
+void print()
+{
+	t++;
+	cout<<t<<":    ";
+	for(int k=1;k<=8;k++)
+		cout<<a[k]<<' ';
+	cout<<endl;
+}
+void Locate(int i)
+{
+	int j;
+	for(j=1;j<=8;j++)
+	{
+		if(b[j]==0 && c[i+j]==0 && d[i-j]==0)
+		{
+			a[i]=j;              //第i个元素放在第j列
+			b[j]=1;
+			c[i+j]=1;
+			d[i-j]=1;
+			if(i<8)
+				Locate(i+1);
+			else
+				print();
+			//清零，进行下一组
+			b[j]=0;
+			c[i+j]=0;
+			d[i-j]=0;
+		}
+	}
+}
+
+void main()
+{
+	for(int k=0;k<24;k++)
+	{
+		b[k]=0;
+		c[k]=0;
+		d[k]=0;
+	}
+	Locate(1);
+}

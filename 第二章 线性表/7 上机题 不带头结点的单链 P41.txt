@@ -1,0 +1,158 @@
+//设用不带头结点的单链表实现线性表，
+//编写求线性表长度的递归算法
+
+#include<iostream>
+using namespace std;
+struct LinkNode
+{
+	int data;
+	LinkNode *link;
+	LinkNode(LinkNode *ptr=NULL)
+	{
+		link=ptr;
+	}
+	LinkNode(const int &item , LinkNode *ptr=NULL)
+	{
+		data=item;
+		link=ptr;
+	}
+};
+
+class List
+{
+public:
+	List(){first=new LinkNode;}
+	List(const int &x)
+	{
+		first=new LinkNode(x);
+	}
+	int Length(LinkNode *first)const;             //计算链表的长度
+	int ReturnLength();
+	bool Insert(int i,const int &x);   //插入x在第 i 个表项之后
+	bool Remove(int i,int &x);         //删除第 i 个表项，通过x返回表项的值
+	void input();                       //输入
+	void output();                      //输出
+	LinkNode *get();
+private:
+	LinkNode *first;
+};
+
+bool List::Insert(int i,const int & x)
+{
+	LinkNode *newNode;
+	if(i==0)        //在第一个结点前插入
+	{
+		newNode=new LinkNode(x);
+		if(newNode==NULL){cerr<<"存储分配错误！"<<endl;}
+		newNode->link=first;
+		first=newNode;
+	}
+	else
+	{
+		LinkNode *current=first;
+		for(int k=1;k<i;k++)
+			if(current==NULL) break;
+			else
+				current=current->link ;
+		if(current==NULL || i<0)
+		{cerr<<"无效的插入位置！"<<endl;return false;}
+		else
+		{
+			newNode=new LinkNode(x);
+			if(newNode==NULL){cerr<<"存储分配错误！"<<endl;}
+			else
+			{
+				newNode->link =current->link;
+				current->link =newNode;
+			}
+		}
+	}
+	return true;
+}
+
+bool List::Remove(int i,int & x)
+{
+	LinkNode *current , *del;
+	if(i==1)                    //删除第一个结点
+	{
+		del=first;
+		first=first->link ;
+	}
+	else
+	{
+		current=first;
+		for(int k=1;k<i-1;k++)                      //找第 i-1 个结点 
+		{
+			if(current==NULL) break;
+			else
+				current=current->link ;
+		}
+		if(current==NULL || current->link ==NULL)
+		{cerr<<"无效的删除位置"<<endl;return false;}
+		else
+		{
+			del=current->link ;
+		    current->link =del->link ;
+		}
+	}
+	x=del->data;
+	delete del;
+	return true;
+}
+void List::input()
+{
+	cout<<"开始建立单链表，请输入元素的值： "<<endl;
+	LinkNode *newNode, *last;
+	int val;
+	cin>>val;
+	if(val!=-1)
+	{
+		newNode=new LinkNode(val);
+		if(newNode==NULL){cerr<<"存储分配错误！"<<endl;}
+		first=newNode;
+	    cin>>val;
+	    last=first;
+	    while(val!=-1)
+		{
+			newNode=new LinkNode(val);
+		    if(newNode==NULL){cerr<<"存储分配错误！"<<endl;}
+			else
+			{
+				last->link =newNode;
+			    last=newNode;
+			    cin>>val;
+			}
+		}
+	}
+}
+
+void List::output()
+{
+	LinkNode *current=first;            //从first开始，因为这是不带附件头结点的链表
+	while(current!=NULL)
+	{
+		cout<<current->data<<endl;
+		current=current->link;
+	}
+}
+
+int List::Length (LinkNode *first) const
+{
+	if(first!=NULL)
+		return 1+Length(first->link );            //递归算法求长度
+	else 
+		return 0;
+}
+int List::ReturnLength ()
+{
+	return Length(first);
+}
+
+int main()
+{
+	char temp;
+	List a;
+	a.input ();
+	int count=a.ReturnLength ();
+	cout<<"长度为"<<count<<endl;
+}

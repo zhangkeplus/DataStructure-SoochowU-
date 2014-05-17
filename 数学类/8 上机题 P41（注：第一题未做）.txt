@@ -1,0 +1,32 @@
+2.求有序序列中前面最小的100个不同的数，它们满足：（1）数 1 在序列中；（2）若 x 在序列中，则2*x+1,3*x+1也在序列中；（3）除此之外，无其他数
+
+
+
+
+3.已知某地某年某月（30天）每日的降水量（如果某日不降水，则该日降水量为0），它们已按日期先后顺序排好，求最多连续几天降水，最多连续几天不降水
+
+#include<iostream>
+using namespace std;
+int main()
+{
+	int maxFall=0,maxUnfall=0,tempFall=0,tempUnfall=0;
+	int day[10]={0,0,0,0,0,0,0,0,1,1};
+	for(int i=0;i<10;i++)
+	{
+		if(day[i]!=0)
+		{
+			tempFall++;
+			maxFall= (maxFall>tempFall)? maxFall:tempFall;
+			tempUnfall=0;
+		}
+		else
+		{
+			tempUnfall++;
+			maxUnfall=(maxUnfall>tempUnfall)? maxUnfall:tempUnfall;
+			tempFall=0;
+		}
+	}
+	cout<<"最多连续"<<maxFall<<"天降水"<<endl;
+	cout<<"最多连续"<<maxUnfall<<"天不降水"<<endl;
+
+}

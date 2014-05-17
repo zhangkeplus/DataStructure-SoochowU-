@@ -1,0 +1,169 @@
+用顺序存储结构实现线性表，对线性表进行删除和插入，并显示每次插入或删除的变化情况
+
+#include<iostream>
+using namespace std;
+
+class SeqList
+{
+public:
+	SeqList(int sz);
+	bool Insert(int i,const int & x);                 //插入x在第 i 个表项之后
+	bool Remove(int i,int & x);                       //删除第 i 个表项，通过x返回表项的值
+	bool IsFull() 
+	{
+		return (last==maxSize-1) ? true : false ;
+	}
+	void reSize(int newSize);
+	void input();                                     //输入
+	void output();                                    //输出
+private:
+	int * data;
+	int maxSize;
+	int last;
+};
+
+SeqList::SeqList(int sz)
+{
+	if(sz>0)
+	{
+		data=new int[sz];
+		if(data==NULL)
+		{
+			cerr<<"存储分配错误！"<<endl;
+		}
+		maxSize=sz;last=-1;
+	}
+}
+
+bool SeqList::Insert(int i,const int & x)
+{
+	if(i<0 || i>last+1)
+		return false;
+//	if( IsFull())
+//	{
+//		reSize(maxSize+10);
+//	}
+	int *p,*q;
+	p=data+i;
+	q=data+last;
+	while(q>=p)
+	{
+		*(q+1)=*q;
+		q--;
+	}        
+	data[i]=x;
+	last++;    
+	return true;
+}
+
+bool SeqList::Remove (int i,int &x)
+{
+	if(i<1 || i>last+1)
+		return false;
+	x=data[x-1];
+	int *p,*q;
+	p=data+i-1;
+	q=data+last;
+	while(q>=p)
+	{
+		*p=*(p+1);
+		p++;
+	}
+	last--;
+	return true;
+}
+/*
+void SeqList::reSize (int newSize)
+{
+	if(newSize<=maxSize)
+	{
+		cerr<<"无效的数组大小"<<endl;
+		return;
+	}
+	int * newarray = new int[newSize];
+	if(newarray==NULL)
+	{
+		cerr<<"存储分配错误"<<endl;
+	}
+	int * p=data;
+	int *q=newarray;
+	while(maxSize--)
+	{
+		*q=*p;
+		q++;
+		p++;
+	}
+	delete []data;
+	data=newarray;
+	maxSize=newSize;
+}
+*/
+void SeqList::input ()
+{
+	cout<<"开始建立顺序表，请输入表中元素的个数：";
+	int num;
+	while(1)
+	{
+		cin>>num;
+		if(num>=0 && num<=maxSize)  break;
+		cout<<"表元素个数输入有误，范围不能超过"<<maxSize<<endl;
+	}
+	for(int i=0;i<num;i++)
+	{
+		cout<<i+1<<":";
+		cin>>data[i];
+	}
+	last=num-1;
+}
+
+void SeqList::output ()
+{
+	for(int i=0;i<=last;i++)
+	{
+		cout<<"#"<<i+1<<":"<<data[i]<<endl;
+	}
+}
+
+
+int main()
+{
+	char temp;
+	SeqList LinearList(3);
+	LinearList.input();
+
+	cout<<"是否对表进行插入,Y or N"<<endl;
+	cin>>temp;
+	while(temp=='Y')
+	{
+		int m,n;
+		cout<<"请输入将要插入第几项之后，以及将插入的数"<<endl;
+		cin>>m>>n;
+		if(LinearList.Insert (m,n))                                //即执行了Insert ，又判断了执行成功与否
+		{
+			cout<<"显示插入后的情况："<<endl;
+			LinearList.output();
+		}
+		else
+			cout<<"参数不合理，插入失败！"<<endl;
+		cout<<"是否对表进行插入,Y or N"<<endl;
+		cin>>temp;
+	}
+
+	cout<<"是否对表进行删除,Y or N"<<endl;
+	cin>>temp;
+	while(temp=='Y')
+	{
+		int m,n;
+		cout<<"请输入将要删除第几项"<<endl;
+		cin>>m;
+		if(LinearList.Remove(m,n))
+		{
+			cout<<"显示删除后的情况："<<endl;
+		    LinearList.output();
+		}
+		else
+			cout<<"参数不合理，删除失败！"<<endl;
+		cout<<"是否对表进行删除,Y or N"<<endl;
+	    cin>>temp;
+	}	
+}

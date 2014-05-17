@@ -1,0 +1,132 @@
+#include<iostream>
+#include<assert.h>
+using namespace std;
+struct LinkNode
+{
+	int data;
+	LinkNode *link;
+	LinkNode(LinkNode *ptr=NULL)
+	{
+		link=ptr;
+	}
+	LinkNode(const int &item , LinkNode *ptr=NULL)
+	{
+		data=item;
+		link=ptr;
+	}
+};
+class LinkedStack
+{
+public:
+	LinkedStack():top(NULL){}
+	void Push(const int& x);
+	bool Pop(int& x);
+	bool getTop(int& x)const;
+	bool IsEmpty()const{return(top==NULL);}
+	int getSize()const;
+	void input();
+	void output();
+	friend ostream& operator<<(ostream& os,LinkedStack& s);
+private:
+	LinkNode *top;
+};
+void LinkedStack::Push(const int &x)
+{
+	LinkNode *p;
+	p=new LinkNode(x,top);
+	assert(p!=NULL);
+	top=p;
+	assert(top!=NULL);
+}
+bool LinkedStack::Pop(int &x)
+{
+	if(IsEmpty())return false;
+	LinkNode *p=top;
+	top=top->link ;
+	x=p->data ;
+	delete p;
+	return true;
+}
+bool LinkedStack::getTop(int &x)const
+{
+	if(IsEmpty())return false;
+	x=top->data ;
+	return true;
+}
+int LinkedStack::getSize ()const
+{
+	LinkNode *p=top;
+	int k=0;
+	while(p!=NULL)
+	{
+		p=p->link ;
+		k++;
+	}
+	return k;
+}
+void LinkedStack::input ()
+{
+	cout<<"开始建立链栈，请输入元素的值： "<<endl;
+	LinkNode *newNode, *last;
+	int val;
+	cin>>val;
+	while(val!=-1)
+	{
+		newNode=new LinkNode(val);
+		if(newNode==NULL){cerr<<"存储分配错误！"<<endl;}
+		else
+		{
+			newNode->link =top;
+		        top=newNode;
+			cin>>val;
+		}
+	}
+}
+ostream& operator<<(ostream& os,LinkedStack& s)
+{
+	os<<"栈中元素个数="<<s.getSize ()<<endl;
+	LinkNode *p=s.top ;
+	int i=0;
+	while(p!=NULL)
+	{
+		os<<++i<<":"<<p->data <<endl;
+		p=p->link ;
+	}
+	return os;
+}
+int main()
+{
+	char temp;
+	LinkedStack a;
+	a.input ();
+	cout<<a;
+	cout<<"进栈？"<<endl;
+	cin>>temp;
+	while(temp=='Y')
+	{
+		int x;
+		cout<<"进栈元素值"<<endl;
+		cin>>x;
+		a.Push (x);
+		cout<<a;
+		cout<<"进栈？"<<endl;
+		cin>>temp;
+	}
+	cout<<"退栈？"<<endl;
+	cin>>temp;
+	while(temp=='Y')
+	{
+		int x;
+		if(a.Pop (x))
+		{
+			cout<<a;
+			cout<<"退栈？"<<endl;
+		    cin>>temp;
+		}
+		else
+		{
+			cout<<"栈空"<<endl;
+			temp='N';
+		}
+	}
+}

@@ -1,0 +1,113 @@
+#include<assert.h>
+#include<iostream>
+using namespace std;
+const int stackIncrement=10;
+class SeqStack
+{
+public:
+	SeqStack(int sz=50);
+	void Push(const int& x);  //如果IsFull(),则溢出处理；否则把x插入到栈顶
+	bool Pop(int& x);         //如果IsFull(),则不执行退栈，返回false；否则退掉位于栈顶的元素，返回true
+	bool getTop(int& x);      //通过引用型参数x得到栈顶元素的值
+	bool IsEmpty()const{return(top==-1);}
+	bool IsFull()const{return(top==maxSize-1);}
+	void input();
+	void output();
+private:
+	int *elements;
+	int top;
+	int maxSize;
+	void overflowProcess();
+};
+SeqStack::SeqStack (int sz):top(-1),maxSize(sz)
+{
+	elements=new int[maxSize];
+	assert(elements!=NULL);
+}
+void SeqStack::overflowProcess ()
+{
+	int *newArray=new int[maxSize+stackIncrement];
+	if(newArray==NULL){cerr<<"wrong"<<endl;exit(1);}
+	for(int i=0;i<=top;i++)
+	{
+		newArray[i]=elements[i];
+	}
+	maxSize+=stackIncrement;
+	delete []elements;
+	elements=newArray;
+}
+void SeqStack::Push(const int &x)
+{
+	if(IsFull())overflowProcess();
+	elements[++top]=x;
+}
+bool SeqStack::Pop(int &x)
+{
+	if(IsEmpty())return false;
+	x=elements[top--];
+	return true;
+}
+bool SeqStack::getTop(int &x)
+{
+	if(IsEmpty())return false;
+	x=elements[top];
+	return true;
+}
+void SeqStack::input ()
+{
+	cout<<"开始建立顺序栈，请输入表中元素的个数："<<endl;
+	int num,val;
+	while(1)
+	{
+		cin>>num;
+		if(num>=0 && num<=maxSize)  break;
+		cout<<"表元素个数输入有误，范围不能超过"<<maxSize<<endl;
+	}
+	for(int i=0;i<num;i++)
+	{
+		cout<<i+1<<":";
+		cin>>val;
+		Push(val);
+	}
+}
+void SeqStack::output ()
+{
+	for(int i=0;i<=top;i++)
+		cout<<elements[i]<<endl;
+}
+int main()
+{
+	char temp;
+	SeqStack a;
+	a.input ();
+	a.output ();
+	cout<<"进栈？"<<endl;
+	cin>>temp;
+	while(temp=='y')
+	{
+		int x;
+		cout<<"进栈元素值"<<endl;
+		cin>>x;
+		a.Push (x);
+		a.output ();
+		cout<<"进栈？"<<endl;
+		cin>>temp;
+	}
+	cout<<"退栈？"<<endl;
+	cin>>temp;
+	while(temp=='y')
+	{
+		int x;
+		if(a.Pop (x))
+		{
+			a.output ();
+			cout<<"退栈？"<<endl;
+		        cin>>temp;
+		}
+		else
+		{
+			cout<<"栈空"<<endl;
+			temp='n';
+		}
+	}
+}

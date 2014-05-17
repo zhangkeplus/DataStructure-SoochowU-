@@ -1,0 +1,168 @@
+1.编一个计算后缀表达式值的程序
+注：（1）假设后缀表达式中的操作数只有0到9共10种可能，中间结果和最后结果可以是其他数
+    （2）运算符只有+-*/共四种可能，其中+-只表示双目加 减，不表示单目正负
+    （3）假设后缀表达式是正确的，除数不为0
+
+#include<iostream>
+#include<assert.h>
+using namespace std;
+struct LinkNode
+{
+	double data;
+	LinkNode *link;
+	LinkNode(LinkNode *ptr=NULL)
+	{
+		link=ptr;
+	}
+	LinkNode(const double &item , LinkNode *ptr=NULL)
+	{
+		data=item;
+		link=ptr;
+	}
+};
+class LinkedStack
+{
+public:
+	LinkedStack():top(NULL){}
+	void Push(const double& x);
+	bool Pop(double& x);
+	void MakeEmpty();
+	bool IsEmpty()const{return(top==NULL)?true:false;}
+	double getTop();
+private:
+	LinkNode *top;
+};
+void LinkedStack::Push(const double &x)
+{
+	LinkNode *p;
+	p=new LinkNode(x,top);
+	assert(p!=NULL);
+	top=p;
+	assert(top!=NULL);
+}
+bool LinkedStack::Pop(double &x)
+{
+	if(IsEmpty())return false;
+	LinkNode *p=top;
+	top=top->link ;
+	x=p->data ;
+	delete p;
+	return true;
+}
+void LinkedStack::MakeEmpty()
+{
+	LinkNode *p;
+	while(top!=NULL)
+	{
+		p=top;
+		top=top->link ;
+		delete p;
+	}
+}
+double LinkedStack::getTop()
+{
+	return top->data ;
+}
+
+
+class Calculator
+{
+public:
+	Calculator();            //构造函数（建立一个栈）
+	void Run();             //执行表达式计算
+	void Clear();           //清空
+private:
+	LinkedStack s;          //栈对象定义
+	void AddOperand(double value);                 //操作数进栈
+	bool Get2_Operands(double& left,double& right); //从栈中退出两个操作数
+	void DoOperator(char op);                      //形成运算指令，进行运算
+};
+Calculator::Calculator()
+{
+	LinkedStack s;
+}
+void Calculator::Clear ()
+{
+	s.MakeEmpty ();
+}
+bool Calculator::Get2_Operands (double& left,double& right)
+{
+	if(s.IsEmpty())
+	{
+		cerr<<"缺少右操作数！"<<endl;
+		return false;
+	}
+	s.Pop(right);
+	if(s.IsEmpty())
+	{
+		cerr<<"缺少左操作数！"<<endl;
+		return false;
+	}
+	s.Pop(left);
+	return true;
+}
+
+//void Calculator::AddOperand (double value)
+//{
+//	s.Push (value);
+//}
+void Calculator::DoOperator(char op)
+{
+	double left,right,value;
+    bool result;
+	result=Get2_Operands(left,right);
+	if(result)
+	{
+		switch (op)
+		{
+		case '+':value=left+right;s.Push (value);break;
+		case '-':value=left-right;s.Push (value);break;
+		case '*':value=left*right;s.Push (value);break;
+		case '/':value=left/right;s.Push (value);break;
+		}
+	}
+	//没有取到两个操作数
+	else
+		Clear();
+}
+
+void Calculator::Run()
+{
+	cout<<"请输入后缀表达式：";
+	char ch;double newOperand;
+	while(cin>>ch && ch!='#')
+	{
+		switch(ch)
+		{
+		case '+':
+		case '-':
+		case '*':
+		case '/':
+			DoOperator(ch);break;
+		default:cin.putback(ch);    //读入的字符不是操作符，将它放回到输入流中以便能用流操作将其按一个浮点操作数重新读入
+			cin>>newOperand;
+			s.Push(newOperand);
+		}
+	}
+	cout<<"结果是："<<s.getTop ();
+}
+int main()
+{
+	Calculator s;
+	s.Run ();
+}
+
+
+
+2.任给两个格子的编号，求从其中一个格子到另一个格子至少要经过几个其他格子
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+1.有一个数列 1,1,2,1,2,3,1,2,3,4，...输入某项的项数，输出该项的值
+#include<iostream>
+using namespace std;
+int main()
+{
+	int n;
+	int m;
+	cin>>n;
+	if(n==1)
+		m=1;
+	else
+	{
+		for(int i=1;i<=n;i++)
+		{
+			if((i*(i+1)*1.0/2)<=n && ((i+1)*(i+2)*1.0/2)>=n)
+			{
+			    m=i*(i+1)/2;
+			    m=n-m;
+			    break;
+		    }
+		}
+	}
+	cout<<m;
+}
+
+
+2.一般的骰子是一个均匀的立方体，在它的六个面上分别刻有1,2,3,4,5,6个点。设一元二次方程a*x*x+b*x+c=0中的
+a，b，c的值分别是掷A，B，C三个骰子所得的点数。反复10000次随机地产生a,b,c的值，最后考查出该方程有实根的概率
+#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<math.h>
+using namespace std;
+int main()
+{
+	srand((unsigned)time(NULL));
+	long int a,b,c;
+	int count=0,t=10000;
+	while(t--)
+	{
+	    a=rand()%6+1;
+	    b=rand()%6+1;
+	    c=rand()%6+1;
+		if((b*b-4*a*c)>=0)
+			count++;
+	}
+	double res=count*1.0/10000;
+	cout<<res;
+}
